@@ -1,0 +1,38 @@
+{
+  "name": "spotify_slack_status",
+  "version": "1.0.0",
+  "description": "Set your Slack status to your currently playing Spotify song",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlevans719/spotify_slack_status.git"
+  },
+  "keywords": [
+    "slack",
+    "spotify",
+    "now",
+    "playing",
+    "status"
+  ],
+  "author": {
+    "name": "Carl Evans",
+    "url": "https://github.com/carlevans719"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/carlevans719/spotify_slack_status/issues"
+  },
+  "homepage": "https://github.com/carlevans719/spotify_slack_status#readme",
+  "dependencies": {
+    "@slack/client": "^3.14.0",
+    "mongodb": "^2.2.31",
+    "spotify-web-api-node": "^2.5.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.32"
+  }
+}
