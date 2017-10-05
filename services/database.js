@@ -6,12 +6,12 @@ class DatabaseService {
   constructor (config) {
     const { MongoClient } = require('mongodb')
     this.client = MongoClient
-    this.config = config
+    this._config = config
   }
 
   async connect () {
     const makeConnection = util.promisify(this.client.connect)
-    const db = await makeConnection.call(this.client, this.config.connectionUri)
+    const db = await makeConnection.call(this.client, this._config.connectionUri)
     this.db = db
 
     return true
@@ -27,28 +27,26 @@ class DatabaseService {
 
   async get (selector) {
     const cursor = this.getCollection().find({key: selector})
-
-    const fetcher = util.promisify(cursor.toArray)
-    const docs = await fetcher.call(cursor)
-
-    return docs
+    return await cursor.toArray()
   }
 
   async getOne (selector) {
-    return await this.get(selector)[0]
+    return (await this.get(selector))[0]
   }
 
   async set (key, doc) {
     const collection = this.getCollection()
 
-    const inserter = util.promisify(this.db.insertMany)
-    const updater = util.promisify(this.db.updateOne)
-
     if (!(await this.getOne(key))) {
-      return await inserter.call(this.db, [Object.assign({key}, doc)])
+      return await collection.insertMany([Object.assign({key}, doc)])
     } else {
-      return await updater.call(this.db, {key}, {$set: doc})
+      return await collection.updateOne({key}, {$set: doc})
     }
+  }
+
+  async remove (key) {
+    const collection = this.getCollection()
+    return await collection.deleteOne({key})
   }
 }
 
