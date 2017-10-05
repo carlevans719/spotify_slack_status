@@ -12,7 +12,7 @@ try {
 (async function init () {
   // ------------ DATABASE --------------
   const databaseConfig = {
-    connectionUri: process.env.MONGO_URI
+    connectionUri: process.env.MONGODB_URI
   }
   const { DatabaseService } = require('./services/database')
   const database = new DatabaseService(databaseConfig)
