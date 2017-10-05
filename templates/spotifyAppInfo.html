@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Enter Spotify App Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <p><a href="https://developer.spotify.com/my-applications/#!/applications/create">Create a new Spotify App</a> and paste the <code>clientId</code> and <code>clientSecret</code> below. Your must register a <code>redirectUri</code> of <code id="redirectUriSample"></code> when registering the app with Spotify.</p>
+    <form method="get">
+      <label for="clientid">ClientId:</label>
+      <input type="text" name="clientid" id="clientid" placeholder="enter client id">
+      
+      <label for="clientsecret">ClientSecret:</label>
+      <input type="text" name="clientsecret" id="clientsecret" placeholder="enter client secret">
+
+      <label for="redirecturi">RedirectUri:</label>
+      <input type="text" name="redirecturi" id="redirecturi">
+
+      <input type="submit" value="Save">
+
+      <script>
+        var redirectUri = window.location.href.replace(/\/$/, '') + '/auth';
+        document.getElementById('redirectUriSample').innerText = redirectUri;
+        document.getElementById('redirecturi').value = redirectUri;
+      </script>
+    </form>
+  </body>
+</html>

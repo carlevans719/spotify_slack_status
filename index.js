@@ -55,7 +55,7 @@ try {
         return res.redirect(await spotify.getAuthUri())
       case spotify.STATES.MISSING_APP_INFO:
         return await storeAppInfo(req, res, spotify)
-      default: res.end('')
+      default: res.end(await spotify.getState())
     }
   })
 
@@ -64,27 +64,46 @@ try {
     switch (await spotify.getState()) {
       case spotify.STATES.MISSING_ACCESS_TOKEN:
         return await convertCodeToTokens(req, res, spotify)
-      default: res.end('')
+      default: res.end(await spotify.getState())
     }
   })
-  
+
   webserver.start()
 })()
 
 async function storeAppInfo (req, res, spotify) {
-  if (req.query) {
+  if (req.query && Object.keys(req.query).length) {
     await spotify.setAppInfo({
       clientId: req.query.clientid,
       clientSecret: req.query.clientsecret,
       redirectUri: req.query.redirecturi
     })
+
+    if (await spotify.getState() === spotify.STATES.MISSING_ACCESS_TOKEN) {
+      return res.redirect(await spotify.getAuthUri())
+    } else {
+      res.end('Running!')
+    }
+  } else {
+    const fs = require('fs')
+    const path = require('path')
+    const util = require('./lib/util')
+
+    const reader = util.promisify(fs.readFile)
+    const filePath = path.resolve('./templates/spotifyAppInfo.html')
+    const html = await reader.call(fs, filePath)
+
+    res.end(String(html))
   }
-  res.end('Missing clientId + clientSecret')
 }
 
 async function convertCodeToTokens (req, res, spotify) {
-  if (req.query) {
-    await spotify.codeToTokens(req.query.code, req.query.state)
-    res.end('Done!')
+  if (req.query && Object.keys(req.query).length) {
+    try {
+      await spotify.codeToTokens(req.query.code, req.query.state)
+      res.redirect('/')
+    } catch (ex) {
+      res.end(ex.message)
+    }
   }
 }
