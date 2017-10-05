@@ -47,7 +47,7 @@ try {
 
   // ---------- WEBSERVER --------------
   const { WebserverService } = require('./services/webserver')
-  const webserver = new WebserverService({port: 3000})
+  const webserver = new WebserverService({port: process.env.PORT || 3000})
 
   webserver.on(webserver.EVENTS.HOME_ROUTE, async (req, res) => {
     switch (await spotify.getState()) {

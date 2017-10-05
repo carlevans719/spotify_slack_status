@@ -1,0 +1,14 @@
+{
+  "name": "Spotify Slack Status",
+  "description": "Set your Slack status to your currently playing Spotify song!",
+  "keywords": [
+    "slack",
+    "spotify",
+    "music"
+  ],
+  "repository": "https://github.com/carlevans719/spotify_slack_status",
+  "success_url": "/",
+  "addons": [
+    "mongolab"
+  ]
+}
